@@ -119,11 +119,6 @@
 		<servlet-name>ms10</servlet-name>
 		<url-pattern>/mys10</url-pattern>
 	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>ms11</servlet-name>
-		<url-pattern>/mys11</url-pattern>
-	</servlet-mapping>
   
   
 </web-app>

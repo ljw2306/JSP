@@ -59,17 +59,8 @@
 		<servlet-name>ms10</servlet-name>
 		<servlet-class>com.naver.MyServlet10</servlet-class>
 	</servlet>
-	
-	<servlet>
-		<servlet-name>ms11</servlet-name>
-		<servlet-class>com.naver.MyServlet11</servlet-class>
-	</servlet>
   
-	<!--   
-	*
-	*
-	*  
-	 -->
+	
 	<servlet-mapping>
 		<servlet-name>ms1</servlet-name>
 		<url-pattern>/mys1</url-pattern>
@@ -118,11 +109,6 @@
 	<servlet-mapping>
 		<servlet-name>ms10</servlet-name>
 		<url-pattern>/mys10</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>ms11</servlet-name>
-		<url-pattern>/mys11</url-pattern>
 	</servlet-mapping>
   
   
