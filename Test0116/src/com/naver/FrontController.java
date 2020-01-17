@@ -43,6 +43,8 @@ public class FrontController extends HttpServlet {
 			com = new LoginUICommand();
 		}else if (what.equalsIgnoreCase("login.do")) {
 			com = new LoginCommand();
+		}else if (what.equalsIgnoreCase("/logout.do")) {
+			com = new LogoutCommand();
 		}
 		
 		if (com != null) {
