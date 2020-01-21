@@ -20,7 +20,7 @@ public class ListCommand implements Command {
 		List<MemberDTO> list = dao.list();
 		request.setAttribute("list", list);
 //		4포워딩
-		request.getRequestDispatcher("list.jsp").forward(request, response);
+		
 		return new CommandAction(false, "list.jsp");
 	}
 }

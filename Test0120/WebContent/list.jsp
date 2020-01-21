@@ -13,10 +13,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-	
-	<header>
+
 	<%@ include file="header.jsp" %>
-	</header>
 	
 	<h1>회원 목록</h1>
 	
@@ -33,9 +31,8 @@
 		}
 	%>
 	
-	<footer>
 	<%@ include file="footer.jsp" %>
-	</footer>
+
 	
 </body>
 </html>

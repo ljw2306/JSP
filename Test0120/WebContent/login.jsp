@@ -13,9 +13,9 @@
 </head>
 <body>
 	<h1>·Î±×ÀÎ</h1>
-	<form action="loginui.do" method="post">
+	<form action="login.do" method="post">
 		ID: <input name="id"><br>
-		PW: <input name="id" type="password"><br>
+		PW: <input name="pw" type="password"><br>
 		<input type="submit" value="login">
 	</form>
 </body>

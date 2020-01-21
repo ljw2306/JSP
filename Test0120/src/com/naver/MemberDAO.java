@@ -74,7 +74,7 @@ public class MemberDAO {
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql = "select * from member2 where id=?";
+		String sql = "select * from member2 where id=? and age=?";
 		ResultSet rs = null;
 		
 		try {
@@ -102,7 +102,7 @@ public class MemberDAO {
 				e2.printStackTrace();
 			}
 		}
-		return null;
+		return login;
 	}
 }
 
