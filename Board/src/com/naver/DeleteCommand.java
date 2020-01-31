@@ -6,18 +6,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class InsertCommand implements Command {
+public class DeleteCommand implements Command {
 
 	@Override
 	public CommandAction execute(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		String author = request.getParameter("author");
-		String title = request.getParameter("title");
-		String content = request.getParameter("content");
+		String sNum = request.getParameter("num");
+		int num = -1;
+		if (sNum != null) {
+			num = Integer.parseInt(sNum);
+		}
 		
-		BoardDAO dao = new BoardDAO();	
-		BoardDTO dto = dao.insert(new BoardDTO(-1, author, title, content, null, 0, -1, 0, 0));
-			
+		BoardDAO dao = new BoardDAO();
+		BoardDTO dto = dao.delete(num);
 		
 		return new CommandAction(true, "list.do");
 	}

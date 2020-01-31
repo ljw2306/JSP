@@ -43,6 +43,8 @@ public class BoardDAO {
 		
 		try {
 			conn = dataFactory.getConnection();
+			
+			
 			int num = createNum(conn);
 			
 			
@@ -126,11 +128,196 @@ public class BoardDAO {
 		
 		return list;
 	}
-	
-	
-	
-	
-	
-	
 
+	public BoardDTO read(int num) {
+		BoardDTO dto = null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "select * from board where num=?";
+		ResultSet rs = null;
+		
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				String title = rs.getString("title");
+				String content = rs.getString("content");
+				String writeday = rs.getString("writeday");
+				int readcnt = rs.getInt("readcnt")+1;
+				String author = rs.getString("author");
+				
+				dto = new BoardDTO(num, author, title, content, writeday, readcnt, 0, 0, 0);
+			}
+			
+			
+			increaseReadcnt(num, conn);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			closeAll(rs, pstmt, conn);
+		}
+		
+		
+		return dto;
+	}
+
+	private void increaseReadcnt(int num, Connection conn) {
+		PreparedStatement pstmt = null;
+		String sql = "update board set readcnt = readcnt+1 where num = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			closeAll(null, pstmt, null);
+		}
+		
+	}
+
+	public BoardDTO delete(int num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "delete from board where num = ?";
+		
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			closeAll(null, pstmt, conn);
+		}
+		return null;
+	}
+
+	public BoardDTO updateui(int num) {
+
+		BoardDTO dto = null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "select * from board where num=?";
+		ResultSet rs = null;
+		
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				String title = rs.getString("title");
+				String content = rs.getString("content");
+				String writeday = rs.getString("writeday");
+				int readcnt = rs.getInt("readcnt")+1;
+				String author = rs.getString("author");
+				int repRoot = rs.getInt("repRoot");
+				int repStep = rs.getInt("repStep");
+				int repIndent = rs.getInt("repIndent");
+				
+				dto = new BoardDTO(num, author, title, content, writeday, readcnt, repRoot, repStep, repIndent);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			closeAll(rs, pstmt, conn);
+		}
+		return dto;
+	}
+
+	public BoardDTO update(BoardDTO boardDTO) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "update board set title=?, content=? where num=?";
+		
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, boardDTO.getTitle());
+			pstmt.setString(2, boardDTO.getContent());
+			pstmt.setInt(3, boardDTO.getNum());
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			closeAll(null, pstmt, conn);
+		}
+		
+		return null;
+	}
+
+	public void reply(int orinum, String author, String title, String content) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "insert into board (num, title, author, content, repRoot, repStep, repIndent)"
+				+ " values(?, ?, ?, ?, ?, ?, ?)";
+		
+		boolean isOk = false;
+		
+		try {
+			conn = dataFactory.getConnection();
+			conn.setAutoCommit(false);
+			
+			BoardDTO dto = updateui(orinum);
+			increaseReplyStep(conn, dto);
+			
+			int num = createNum(conn);
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.setString(2, title);
+			pstmt.setString(3, author);
+			pstmt.setString(4, content);
+			pstmt.setInt(5, dto.getRepRoot());
+			pstmt.setInt(6, dto.getRepStep()+1);
+			pstmt.setInt(7, dto.getRepIndent()+1);
+			
+			pstmt.executeUpdate();
+			
+			isOk = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if (isOk) {
+					conn.commit();
+				}else {
+					conn.rollback();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			closeAll(null, pstmt, conn);
+		}
+		
+	}
+	
+	
+	private void increaseReplyStep(Connection conn, BoardDTO dto) {
+		PreparedStatement pstmt = null;
+		String sql = "update board set repStep = repStep+1 where repRoot=? and repStep>?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getRepRoot());
+			pstmt.setInt(2, dto.getRepStep());
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			closeAll(null, pstmt, null);
+		}
+	}
+	
+	
 }

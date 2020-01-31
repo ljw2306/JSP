@@ -37,6 +37,18 @@ public class FrontController extends HttpServlet {
 			com = new InsertUICommand();
 		}else if (what.equalsIgnoreCase("/insert.do")) {
 			com = new InsertCommand();
+		}else if (what.equalsIgnoreCase("/read.do")) {
+			com = new ReadCommand();
+		}else if (what.equalsIgnoreCase("/delete.do")) {
+			com = new DeleteCommand();
+		}else if (what.equalsIgnoreCase("/updateui.do")) {
+			com = new UpdateUICommand();
+		}else if (what.equalsIgnoreCase("/update.do")) {
+			com = new UpdateCommand();	
+		}else if (what.equalsIgnoreCase("/replyui.do")) {
+			com = new ReplyUICommand();
+		}else if (what.equalsIgnoreCase("/reply.do")) {
+			com = new ReplyCommand();
 		}
 		
 		if (com != null) {

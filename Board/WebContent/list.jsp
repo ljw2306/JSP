@@ -18,10 +18,44 @@
 	
 	<h1>°Ô½ÃÆÇ</h1>
 	
-	<c:forEach items="${list}" var="dto">
-		${dto.num} : <a href="read.do?${dto.num}">${dto.title}</a> : ${dto.author} : ${dto.writeday} : ${dto.readcnt} : ${dto.repRoot} : ${dto.repStep} : ${dto.repIndent}
-		<br>
-	</c:forEach>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>num</th>
+				<th>title</th>
+				<th>author</th>
+				<th>writeday</th>
+				<th>readcnt</th>
+				<th>root</th>
+				<th>step</th>
+				<th>indent</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<c:forEach items="${list}" var="dto">
+				<tr>
+					<td>${dto.num}</td>
+					<td>
+					
+					<c:forEach begin="1" end="${dto.repIndent }">
+						&nbsp;&nbsp;
+					</c:forEach>
+					
+					<a href="read.do?num=${dto.num}">${dto.title}</a>
+					
+					</td>
+					
+					<td>${dto.author}</td>
+					<td>${dto.writeday}</td>
+					<td>${dto.readcnt}</td>
+					<td>${dto.repRoot}</td>
+					<td>${dto.repStep}</td>
+					<td>${dto.repIndent}</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 	
 	
 </body>
